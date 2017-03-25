@@ -1,6 +1,6 @@
 package pl.sda.order;
 
-import pl.sda.order.transport.TransportType;
+import pl.sda.transport.TransportType;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

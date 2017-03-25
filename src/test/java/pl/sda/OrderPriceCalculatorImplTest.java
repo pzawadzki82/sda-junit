@@ -6,9 +6,10 @@ import org.junit.experimental.categories.Category;
 import org.mockito.MockitoAnnotations;
 import pl.sda.order.*;
 import pl.sda.order.exception.NoTransportSpecifiedException;
+import pl.sda.transport.TransportCostCalculator;
 import pl.sda.transport.TransportCostCalculatorImpl;
 import pl.sda.transport.TransportRepositoryInMemoryImpl;
-import pl.sda.order.transport.TransportType;
+import pl.sda.transport.TransportType;
 import pl.sda.suites.SlowTestCategory;
 
 import java.math.BigDecimal;
@@ -22,11 +23,13 @@ public class OrderPriceCalculatorImplTest {
 
 
     private OrderPriceCalculator orderPriceCalculator;
+    private TransportCostCalculator transportCostCalculator;
 
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
-        orderPriceCalculator = new OrderPriceCalculatorImpl(new TransportCostCalculatorImpl(new TransportRepositoryInMemoryImpl()));
+        transportCostCalculator = new TransportCostCalculatorImpl(new TransportRepositoryInMemoryImpl());
+        orderPriceCalculator = new OrderPriceCalculatorImpl(transportCostCalculator);
     }
 
 

@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 import pl.sda.transport.TransportCostCalculator;
 import pl.sda.transport.TransportCostCalculatorImpl;
 import pl.sda.transport.TransportRepository;
-import pl.sda.order.transport.TransportType;
+import pl.sda.transport.TransportType;
 import pl.sda.suites.FastTestCategory;
 
 import java.io.File;

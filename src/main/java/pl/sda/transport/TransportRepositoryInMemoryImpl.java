@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class TransportRepositoryInMemoryImpl implements TransportRepository{
 
     public BigDecimal getTransportUnitPrice(TransportType transportType){
-        return BigDecimal.ZERO;
+        return BigDecimal.ONE;
     }
 
 }
