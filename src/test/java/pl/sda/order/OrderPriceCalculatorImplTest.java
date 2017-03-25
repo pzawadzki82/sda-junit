@@ -1,5 +1,6 @@
 package pl.sda.order;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -31,7 +32,7 @@ public class OrderPriceCalculatorImplTest {
         orderPriceCalculator = new OrderPriceCalculatorImpl(transportCostCalculator);
     }
 
-    @Before
+    @After
     public void cleanup(){
         transportCostCalculator.clean();
     }
