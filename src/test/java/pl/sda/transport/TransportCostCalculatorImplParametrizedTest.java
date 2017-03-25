@@ -1,10 +1,11 @@
-package pl.sda;
+package pl.sda.transport;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -28,27 +29,13 @@ import static org.junit.Assert.assertTrue;
  * Created by pzawa on 25.03.2017.
  */
 @Category(FastTestCategory.class)
-public class TransportCostCalculatorImplTest {
-    @Mock
-    private TransportRepository transportRepository;
-
-    @Before
-    public void setup(){
-        MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    public void shouldCalculateTotalPriceCallRepoMethod(){
-        Mockito.when(transportRepository.getTransportUnitPrice(Matchers.anyObject())).thenReturn(BigDecimal.ZERO);
-        TransportCostCalculator transportCostCalculator = new TransportCostCalculatorImpl(transportRepository);
-        BigDecimal price = transportCostCalculator.getTotalPrice(itemQty, transportType);
-        Mockito.verify(transportRepository, Mockito.atLeastOnce()).getTransportUnitPrice(Matchers.anyObject());
-    }
+@RunWith(Parameterized.class)
+public class TransportCostCalculatorImplParametrizedTest {
 
     // fields used together with @Parameter must be public
-    @Parameterized.Parameter
+    @Parameterized.Parameter(0)
     public int itemQty;
-    @Parameterized.Parameter
+    @Parameterized.Parameter(1)
     public TransportType transportType;
 
     // creates the test data
@@ -60,21 +47,14 @@ public class TransportCostCalculatorImplTest {
 
     @Test
     public void shouldCalculateTotalPrice(){
-        Mockito.when(transportRepository.getTransportUnitPrice(Matchers.anyObject())).thenReturn(BigDecimal.ZERO);;
-        TransportCostCalculator transportCostCalculator = new TransportCostCalculatorImpl(transportRepository);
+        //given
+        TransportCostCalculator transportCostCalculator = new TransportCostCalculatorImpl(new TransportRepositoryInMemoryImpl());
+        BigDecimal expectedTransportPrice = BigDecimal.ONE.multiply(BigDecimal.valueOf(itemQty));
+
+        //when
         BigDecimal price = transportCostCalculator.getTotalPrice(itemQty, transportType);
-        assertTrue(price.compareTo(BigDecimal.ZERO) == 0);
+
+        //then
+        assertTrue(price.compareTo(expectedTransportPrice) == 0);
     }
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
-
-    @Test
-    public void testUsingTempFolder() throws IOException {
-        File createdFolder = folder.newFolder("newfolder");
-        File createdFile = folder.newFile("myfilefile.txt");
-        assertTrue(createdFile.exists());
-    }
-
-
 }

@@ -1,4 +1,4 @@
-package pl.sda;
+package pl.sda.order;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,22 +27,33 @@ public class OrderPriceCalculatorImplTest {
 
     @Before
     public void setup(){
-        MockitoAnnotations.initMocks(this);
         transportCostCalculator = new TransportCostCalculatorImpl(new TransportRepositoryInMemoryImpl());
         orderPriceCalculator = new OrderPriceCalculatorImpl(transportCostCalculator);
     }
 
+    @Before
+    public void cleanup(){
+        transportCostCalculator.clean();
+    }
 
     @Test
     public void shouldCalculateTotalPriceReturnZeroWhenNoItems(){
+        //given
         Order order = new Order(1, TransportType.POCZTA_POLSKA);
+
+        //when
         BigDecimal totalPrice = orderPriceCalculator.calculateTotalPrice(order);
+
+        //then
         assertTrue(totalPrice.compareTo(BigDecimal.ZERO) == 0);
     }
 
     @Test(expected = NoTransportSpecifiedException.class)
     public void shouldReturnExceptionWhenTransportNotSpecified(){
+        //given
         Order order = new Order(1, null);
+
+        //when
         BigDecimal totalPrice = orderPriceCalculator.calculateTotalPrice(order);
     }
 }
